@@ -15,7 +15,6 @@ def get_api_key():
     return api_key
 
 def get_headers(api_version="2024-08-13"):
-    """Generate the headers for Cal.com API requests with optional API version."""
     api_key = get_api_key()
     return {
         'Authorization': f'Bearer {api_key}',
@@ -77,7 +76,6 @@ def parse_date_time(date_str, timezone_str):
     return utc_dt.strftime("%Y-%m-%dT%H:%M:%S.000Z")
 
 def get_all_event_types():
-    """Retrieve all event types from Cal.com."""
     url = "https://api.cal.com/v2/event-types"
     
     # Use the specific API version required for event types
@@ -94,8 +92,6 @@ def get_all_event_types():
         return {"error": f"Failed to get event types: {str(e)}{error_detail}", "status": "error"}
 
 def find_event_type_by_duration(duration):
-    """Find an event type ID matching the given duration."""
-    # Get all event types
     response = get_all_event_types()
     
     if "status" in response and response["status"] == "error":
@@ -141,8 +137,6 @@ def create_event_type(title, slug, length_in_minutes):
         return {"error": f"Failed to create event type: {str(e)}{error_detail}", "status": "error"}
 
 def get_or_create_event_type(duration):
-    """Get an existing event type or create a new one if necessary."""
-    
     result = find_event_type_by_duration(duration)
     
     if result["status"] == "success":
@@ -199,7 +193,6 @@ def get_available_slots(event_type_id, start_date, end_date):
         return {"error": f"Failed to get available slots: {str(e)}{error_detail}", "status": "error"}
 
 def create_booking(event_type_id, start_time, attendee_name, attendee_email, attendee_timezone="America/New_York", duration=None):
-    
     if duration is not None and (event_type_id is None or event_type_id == 0):
         result = get_or_create_event_type(duration)
         if result["status"] == "success" and "event_type_id" in result:
@@ -301,18 +294,6 @@ def cancel_booking(booking_id):
         return {"error": f"Failed to cancel booking: {str(e)}{error_detail}", "status": "error"}
 
 def reschedule_booking(booking_uid, new_start_time, attendee_timezone="America/New_York"):
-    """
-    Reschedule a booking in Cal.com.
-    
-    Args:
-        booking_uid (str): The unique identifier of the booking to reschedule.
-        new_start_time (str): New start time in a human-readable format or ISO 8601 format.
-        attendee_timezone (str, optional): Timezone of the attendee. Defaults to "America/New_York".
-        reason (str, optional): Reason for rescheduling. Defaults to "User requested reschedule".
-    
-    Returns:
-        dict: Response from the Cal.com API
-    """
     url = f"https://api.cal.com/v2/bookings/{booking_uid}/reschedule"
     
     attendee_timezone = normalize_timezone(attendee_timezone)
