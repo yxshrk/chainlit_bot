@@ -1,9 +1,11 @@
 # chainlit_bot
 AI Powered Bot that books calendar meetings for you.
-To run the chat bot, enter 'chainlit run app.py' in the project's root directory.
+To run the chat bot, enter 'chainlit run app.py' in the project's root directory (pip install -r requirements.txt to make sure you have all the dependencies required)
+Do note that you will need a .env file in your root directory with a valid OPENAI_API_KEY and CALCOM_API_KEY.
 The bot can create new meetings, list all your bookings, cancel meetings and reschedule meetings. 
 The bot uses OpenAI's function calling feature which allows GPT models to use the functions defined in the cal.com api to make API calls on behalf of the app 
 depending on user prompts.
+
 
 The workflow:
 1. User enters prompt into the chatbot interface
