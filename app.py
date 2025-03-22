@@ -3,16 +3,12 @@ from openai_functions import openai_function_calling
 import os
 from dotenv import load_dotenv
 
-# Load environment variables
 load_dotenv()
 
-# Dictionary to store user sessions
 user_sessions = {}
 
 @cl.on_chat_start
 async def on_chat_start():
-    """Initialize the chat session."""
-    # Send a welcome message
     await cl.Message(
         content="Hello! I'm your Cal.com assistant. I can help you with:\n\n"
                "1. Booking new events\n"
@@ -21,20 +17,18 @@ async def on_chat_start():
                "How can I assist you today?",
     ).send()
     
-    # Check for API keys
     if not os.getenv("OPENAI_API_KEY"):
         await cl.Message(
-            content="⚠️ OpenAI API key not found. Please set the OPENAI_API_KEY environment variable.",
+            content="OpenAI API key not found. Please set the OPENAI_API_KEY environment variable.",
         ).send()
     
     if not os.getenv("CALCOM_API_KEY"):
         await cl.Message(
-            content="⚠️ Cal.com API key not found. Please set the CALCOM_API_KEY environment variable.",
+            content="Cal.com API key not found. Please set the CALCOM_API_KEY environment variable.",
         ).send()
 
 @cl.on_message
 async def on_message(message: cl.Message):
-    """Process user messages and respond with AI-generated content."""
     try:
         await cl.Message(content="").send()
         user_id = message.author or "default_user"
