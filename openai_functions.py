@@ -153,7 +153,7 @@ def format_date_with_model(date_text, timezone, message_history=None):
 
 #the earlier version of the function was using user_prompts, we keep the variable passed for future modifications
 def handle_function_call(function_name, arguments, user_prompt=""):
-    """Execute the appropriate Cal.com API function based on the function name and arguments."""
+    #print statements to debug what functions are called and with what arguments
     print(f"Handling function call: {function_name}")
     print(f"Arguments: {arguments}")
     
